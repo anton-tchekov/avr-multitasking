@@ -1,0 +1,522 @@
+   1               		.file	"main.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   9               		.text
+  10               	.Ltext0:
+  16               	.global	blink0
+  18               	blink0:
+   1:main.c        **** #include <stddef.h>
+   2:main.c        **** #include <avr/io.h>
+   3:main.c        **** #include <avr/interrupt.h>
+   4:main.c        **** #include <inttypes.h>
+   5:main.c        **** 
+   6:main.c        **** #define MAX_TASK_COUNT 10
+   7:main.c        **** 
+   8:main.c        **** struct struct_Task
+   9:main.c        **** {
+  10:main.c        **** 	void (*func)(void);
+  11:main.c        **** 	uint16_t exec_time;
+  12:main.c        **** 	uint16_t delay_time;
+  13:main.c        **** 	uint8_t repeat;
+  14:main.c        **** };
+  15:main.c        **** 
+  16:main.c        **** typedef struct struct_Task Task;
+  17:main.c        **** 
+  18:main.c        **** volatile uint16_t ms = 0;
+  19:main.c        **** Task tasks[MAX_TASK_COUNT];
+  20:main.c        **** 
+  21:main.c        **** void init(void);
+  22:main.c        **** int8_t add_task(void (*fn)(void), uint16_t delay, uint8_t rep);
+  23:main.c        **** void remove_task(uint8_t taskid);
+  24:main.c        **** 
+  25:main.c        **** void blink0(void);
+  26:main.c        **** void blink1(void);
+  27:main.c        **** void blink2(void);
+  28:main.c        **** 
+  29:main.c        **** int main(void)
+  30:main.c        **** {
+  31:main.c        **** 	DDRB = (1 << PB0) | (1 << PB1) | (1 << PB2);
+  32:main.c        **** 
+  33:main.c        **** 	init();
+  34:main.c        **** 	add_task(blink0, 1000, 1);
+  35:main.c        **** 	add_task(blink1,  500, 1);
+  36:main.c        **** 	add_task(blink2,  200, 1);
+  37:main.c        **** 
+  38:main.c        **** 	while(1)
+  39:main.c        **** 	{
+  40:main.c        **** 
+  41:main.c        **** 	}
+  42:main.c        **** 
+  43:main.c        **** 	return 0;
+  44:main.c        **** }
+  45:main.c        **** 
+  46:main.c        **** void blink0(void)
+  47:main.c        **** {
+  20               	.LM0:
+  21               	.LFBB1:
+  22               	/* prologue: function */
+  23               	/* frame size = 0 */
+  24               	/* stack size = 0 */
+  25               	.L__stack_usage = 0
+  48:main.c        **** 	PORTB ^= (1 << PB0);
+  27               	.LM1:
+  28 0000 88B3      		in r24,0x18
+  29 0002 91E0      		ldi r25,lo8(1)
+  30 0004 8927      		eor r24,r25
+  31 0006 88BB      		out 0x18,r24
+  32               	/* epilogue start */
+  49:main.c        **** }
+  34               	.LM2:
+  35 0008 0895      		ret
+  37               	.Lscope1:
+  40               	.global	blink1
+  42               	blink1:
+  50:main.c        **** 
+  51:main.c        **** void blink1(void)
+  52:main.c        **** {
+  44               	.LM3:
+  45               	.LFBB2:
+  46               	/* prologue: function */
+  47               	/* frame size = 0 */
+  48               	/* stack size = 0 */
+  49               	.L__stack_usage = 0
+  53:main.c        **** 	PORTB ^= (1 << PB1);
+  51               	.LM4:
+  52 000a 88B3      		in r24,0x18
+  53 000c 92E0      		ldi r25,lo8(2)
+  54 000e 8927      		eor r24,r25
+  55 0010 88BB      		out 0x18,r24
+  56               	/* epilogue start */
+  54:main.c        **** }
+  58               	.LM5:
+  59 0012 0895      		ret
+  61               	.Lscope2:
+  64               	.global	blink2
+  66               	blink2:
+  55:main.c        **** 
+  56:main.c        **** void blink2(void)
+  57:main.c        **** {
+  68               	.LM6:
+  69               	.LFBB3:
+  70               	/* prologue: function */
+  71               	/* frame size = 0 */
+  72               	/* stack size = 0 */
+  73               	.L__stack_usage = 0
+  58:main.c        **** 	PORTB ^= (1 << PB2);
+  75               	.LM7:
+  76 0014 88B3      		in r24,0x18
+  77 0016 94E0      		ldi r25,lo8(4)
+  78 0018 8927      		eor r24,r25
+  79 001a 88BB      		out 0x18,r24
+  80               	/* epilogue start */
+  59:main.c        **** }
+  82               	.LM8:
+  83 001c 0895      		ret
+  85               	.Lscope3:
+  88               	.global	init
+  90               	init:
+  60:main.c        **** 
+  61:main.c        **** void init(void)
+  62:main.c        **** {
+  92               	.LM9:
+  93               	.LFBB4:
+  94               	/* prologue: function */
+  95               	/* frame size = 0 */
+  96               	/* stack size = 0 */
+  97               	.L__stack_usage = 0
+  98 001e E0E0      		ldi r30,lo8(tasks)
+  99 0020 F0E0      		ldi r31,hi8(tasks)
+ 100               	.L5:
+ 101               	.LBB2:
+  63:main.c        **** 	for(uint8_t i = 0; i < MAX_TASK_COUNT; i++)
+  64:main.c        **** 	{
+  65:main.c        **** 		tasks[i].func = NULL;
+ 103               	.LM10:
+ 104 0022 1182      		std Z+1,__zero_reg__
+ 105 0024 1082      		st Z,__zero_reg__
+  63:main.c        **** 	for(uint8_t i = 0; i < MAX_TASK_COUNT; i++)
+ 107               	.LM11:
+ 108 0026 3796      		adiw r30,7
+ 109 0028 80E0      		ldi r24,hi8(tasks+70)
+ 110 002a E030      		cpi r30,lo8(tasks+70)
+ 111 002c F807      		cpc r31,r24
+ 112 002e 01F4      		brne .L5
+ 113               	.LBE2:
+  66:main.c        **** 	}
+  67:main.c        **** 
+  68:main.c        **** 	TCCR0 = (1 << WGM01) | (1 << CS01) | (1 << CS00);
+ 115               	.LM12:
+ 116 0030 8BE0      		ldi r24,lo8(11)
+ 117 0032 83BF      		out 0x33,r24
+  69:main.c        **** 	OCR0 = 115;
+ 119               	.LM13:
+ 120 0034 83E7      		ldi r24,lo8(115)
+ 121 0036 8CBF      		out 0x3c,r24
+  70:main.c        **** 	TIMSK = (1 << OCIE0);
+ 123               	.LM14:
+ 124 0038 82E0      		ldi r24,lo8(2)
+ 125 003a 89BF      		out 0x39,r24
+  71:main.c        **** 	asm volatile("sei");
+ 127               	.LM15:
+ 128               	/* #APP */
+ 129               	 ;  71 "main.c" 1
+ 130 003c 7894      		sei
+ 131               	 ;  0 "" 2
+ 132               	/* #NOAPP */
+ 133               	/* epilogue start */
+  72:main.c        **** }
+ 135               	.LM16:
+ 136 003e 0895      		ret
+ 138               	.Lscope4:
+ 147               	.global	add_task
+ 149               	add_task:
+  73:main.c        **** 
+  74:main.c        **** int8_t add_task(void (*fn)(void), uint16_t delay, uint8_t rep)
+  75:main.c        **** {
+ 151               	.LM17:
+ 152               	.LFBB5:
+ 153               	/* prologue: function */
+ 154               	/* frame size = 0 */
+ 155               	/* stack size = 0 */
+ 156               	.L__stack_usage = 0
+ 157 0040 582F      		mov r21,r24
+ 158 0042 DB01      		movw r26,r22
+  76:main.c        **** 	uint8_t sreg = SREG;
+ 160               	.LM18:
+ 161 0044 6FB7      		in r22,__SREG__
+  77:main.c        **** 	int8_t taskid = -1;
+  78:main.c        **** 	Task *t = tasks;
+  79:main.c        **** 
+  80:main.c        **** 	asm volatile("cli");
+ 163               	.LM19:
+ 164               	/* #APP */
+ 165               	 ;  80 "main.c" 1
+ 166 0046 F894      		cli
+ 167               	 ;  0 "" 2
+  78:main.c        **** 
+ 169               	.LM20:
+ 170               	/* #NOAPP */
+ 171 0048 E0E0      		ldi r30,lo8(tasks)
+ 172 004a F0E0      		ldi r31,hi8(tasks)
+ 173               	.L8:
+  81:main.c        **** 
+  82:main.c        **** 	while(t->func != NULL && t < tasks+MAX_TASK_COUNT)
+ 175               	.LM21:
+ 176 004c 2081      		ld r18,Z
+ 177 004e 3181      		ldd r19,Z+1
+ 178 0050 232B      		or r18,r19
+ 179 0052 01F0      		breq .L9
+ 181               	.LM22:
+ 182 0054 80E0      		ldi r24,hi8(tasks+70)
+ 183 0056 E030      		cpi r30,lo8(tasks+70)
+ 184 0058 F807      		cpc r31,r24
+ 185 005a 01F4      		brne .L10
+  77:main.c        **** 	Task *t = tasks;
+ 187               	.LM23:
+ 188 005c 8FEF      		ldi r24,lo8(-1)
+ 189               	.L11:
+  83:main.c        **** 	{
+  84:main.c        **** 		t++;
+  85:main.c        **** 	}
+  86:main.c        **** 
+  87:main.c        **** 	if(t->func == NULL)
+  88:main.c        **** 	{
+  89:main.c        **** 		taskid = t-tasks;
+  90:main.c        **** 		t->func = fn;
+  91:main.c        **** 		t->delay_time = delay;
+  92:main.c        **** 		t->exec_time = ms+delay;
+  93:main.c        **** 		t->repeat = rep;
+  94:main.c        **** 	}
+  95:main.c        **** 
+  96:main.c        **** 	SREG = sreg;
+ 191               	.LM24:
+ 192 005e 6FBF      		out __SREG__,r22
+ 193               	/* epilogue start */
+  97:main.c        **** 	return taskid;
+  98:main.c        **** }
+ 195               	.LM25:
+ 196 0060 0895      		ret
+ 197               	.L10:
+  84:main.c        **** 	}
+ 199               	.LM26:
+ 200 0062 3796      		adiw r30,7
+ 201 0064 00C0      		rjmp .L8
+ 202               	.L9:
+  89:main.c        **** 		t->func = fn;
+ 204               	.LM27:
+ 205 0066 9F01      		movw r18,r30
+ 206 0068 2050      		subi r18,lo8(tasks)
+ 207 006a 3040      		sbci r19,hi8(tasks)
+  89:main.c        **** 		t->func = fn;
+ 209               	.LM28:
+ 210 006c 87EB      		ldi r24,lo8(-73)
+ 211 006e 289F      		mul r18,r24
+ 212 0070 802D      		mov r24,r0
+ 213 0072 1124      		clr r1
+  90:main.c        **** 		t->delay_time = delay;
+ 215               	.LM29:
+ 216 0074 5083      		st Z,r21
+ 217 0076 9183      		std Z+1,r25
+  91:main.c        **** 		t->exec_time = ms+delay;
+ 219               	.LM30:
+ 220 0078 B583      		std Z+5,r27
+ 221 007a A483      		std Z+4,r26
+  92:main.c        **** 		t->repeat = rep;
+ 223               	.LM31:
+ 224 007c 2091 0000 		lds r18,ms
+ 225 0080 3091 0000 		lds r19,ms+1
+ 226 0084 A20F      		add r26,r18
+ 227 0086 B31F      		adc r27,r19
+  92:main.c        **** 		t->repeat = rep;
+ 229               	.LM32:
+ 230 0088 B383      		std Z+3,r27
+ 231 008a A283      		std Z+2,r26
+  93:main.c        **** 	}
+ 233               	.LM33:
+ 234 008c 4683      		std Z+6,r20
+ 235 008e 00C0      		rjmp .L11
+ 244               	.Lscope5:
+ 246               		.section	.text.startup,"ax",@progbits
+ 249               	.global	main
+ 251               	main:
+  30:main.c        **** 	DDRB = (1 << PB0) | (1 << PB1) | (1 << PB2);
+ 253               	.LM34:
+ 254               	.LFBB6:
+ 255               	/* prologue: function */
+ 256               	/* frame size = 0 */
+ 257               	/* stack size = 0 */
+ 258               	.L__stack_usage = 0
+  31:main.c        **** 
+ 260               	.LM35:
+ 261 0000 87E0      		ldi r24,lo8(7)
+ 262 0002 87BB      		out 0x17,r24
+  33:main.c        **** 	add_task(blink0, 1000, 1);
+ 264               	.LM36:
+ 265 0004 0E94 0000 		call init
+  34:main.c        **** 	add_task(blink1,  500, 1);
+ 267               	.LM37:
+ 268 0008 41E0      		ldi r20,lo8(1)
+ 269 000a 68EE      		ldi r22,lo8(-24)
+ 270 000c 73E0      		ldi r23,lo8(3)
+ 271 000e 80E0      		ldi r24,lo8(gs(blink0))
+ 272 0010 90E0      		ldi r25,hi8(gs(blink0))
+ 273 0012 0E94 0000 		call add_task
+  35:main.c        **** 	add_task(blink2,  200, 1);
+ 275               	.LM38:
+ 276 0016 41E0      		ldi r20,lo8(1)
+ 277 0018 64EF      		ldi r22,lo8(-12)
+ 278 001a 71E0      		ldi r23,lo8(1)
+ 279 001c 80E0      		ldi r24,lo8(gs(blink1))
+ 280 001e 90E0      		ldi r25,hi8(gs(blink1))
+ 281 0020 0E94 0000 		call add_task
+  36:main.c        **** 
+ 283               	.LM39:
+ 284 0024 41E0      		ldi r20,lo8(1)
+ 285 0026 68EC      		ldi r22,lo8(-56)
+ 286 0028 70E0      		ldi r23,0
+ 287 002a 80E0      		ldi r24,lo8(gs(blink2))
+ 288 002c 90E0      		ldi r25,hi8(gs(blink2))
+ 289 002e 0E94 0000 		call add_task
+ 290               	.L14:
+ 291 0032 00C0      		rjmp .L14
+ 293               	.Lscope6:
+ 295               		.text
+ 298               	.global	remove_task
+ 300               	remove_task:
+  99:main.c        **** 
+ 100:main.c        **** void remove_task(uint8_t taskid)
+ 101:main.c        **** {
+ 302               	.LM40:
+ 303               	.LFBB7:
+ 304               	/* prologue: function */
+ 305               	/* frame size = 0 */
+ 306               	/* stack size = 0 */
+ 307               	.L__stack_usage = 0
+ 102:main.c        **** 	tasks[taskid].func = NULL;
+ 309               	.LM41:
+ 310 0090 97E0      		ldi r25,lo8(7)
+ 311 0092 899F      		mul r24,r25
+ 312 0094 F001      		movw r30,r0
+ 313 0096 1124      		clr __zero_reg__
+ 314 0098 E050      		subi r30,lo8(-(tasks))
+ 315 009a F040      		sbci r31,hi8(-(tasks))
+ 316 009c 1182      		std Z+1,__zero_reg__
+ 317 009e 1082      		st Z,__zero_reg__
+ 318               	/* epilogue start */
+ 103:main.c        **** }
+ 320               	.LM42:
+ 321 00a0 0895      		ret
+ 323               	.Lscope7:
+ 326               	.global	__vector_10
+ 328               	__vector_10:
+ 104:main.c        **** 
+ 105:main.c        **** /* 1 ms timer */
+ 106:main.c        **** ISR(TIMER0_COMP_vect)
+ 107:main.c        **** {
+ 330               	.LM43:
+ 331               	.LFBB8:
+ 332 00a2 1F92      		push r1
+ 333 00a4 0F92      		push r0
+ 334 00a6 0FB6      		in r0,__SREG__
+ 335 00a8 0F92      		push r0
+ 336 00aa 1124      		clr __zero_reg__
+ 337 00ac 2F93      		push r18
+ 338 00ae 3F93      		push r19
+ 339 00b0 4F93      		push r20
+ 340 00b2 5F93      		push r21
+ 341 00b4 6F93      		push r22
+ 342 00b6 7F93      		push r23
+ 343 00b8 8F93      		push r24
+ 344 00ba 9F93      		push r25
+ 345 00bc AF93      		push r26
+ 346 00be BF93      		push r27
+ 347 00c0 CF93      		push r28
+ 348 00c2 DF93      		push r29
+ 349 00c4 EF93      		push r30
+ 350 00c6 FF93      		push r31
+ 351               	/* prologue: Signal */
+ 352               	/* frame size = 0 */
+ 353               	/* stack size = 17 */
+ 354               	.L__stack_usage = 17
+ 108:main.c        **** 	++ms;
+ 356               	.LM44:
+ 357 00c8 8091 0000 		lds r24,ms
+ 358 00cc 9091 0000 		lds r25,ms+1
+ 359 00d0 0196      		adiw r24,1
+ 360 00d2 9093 0000 		sts ms+1,r25
+ 361 00d6 8093 0000 		sts ms,r24
+ 362 00da C0E0      		ldi r28,lo8(tasks)
+ 363 00dc D0E0      		ldi r29,hi8(tasks)
+ 364               	.L19:
+ 365               	.LBB3:
+ 366               	.LBB4:
+ 109:main.c        **** 
+ 110:main.c        **** 	for(uint8_t i = 0; i < MAX_TASK_COUNT; i++)
+ 111:main.c        **** 	{
+ 112:main.c        **** 		Task *t = &(tasks[i]);
+ 113:main.c        **** 
+ 114:main.c        **** 		if((t->func != NULL) && (t->exec_time == ms))
+ 368               	.LM45:
+ 369 00de E881      		ld r30,Y
+ 370 00e0 F981      		ldd r31,Y+1
+ 372               	.LM46:
+ 373 00e2 3097      		sbiw r30,0
+ 374 00e4 01F0      		breq .L17
+ 376               	.LM47:
+ 377 00e6 8091 0000 		lds r24,ms
+ 378 00ea 9091 0000 		lds r25,ms+1
+ 380               	.LM48:
+ 381 00ee 2A81      		ldd r18,Y+2
+ 382 00f0 3B81      		ldd r19,Y+3
+ 383 00f2 2817      		cp r18,r24
+ 384 00f4 3907      		cpc r19,r25
+ 385 00f6 01F4      		brne .L17
+ 115:main.c        **** 		{
+ 116:main.c        **** 			(*(t->func))();
+ 387               	.LM49:
+ 388 00f8 0995      		icall
+ 117:main.c        **** 			if(t->repeat)
+ 390               	.LM50:
+ 391 00fa 8E81      		ldd r24,Y+6
+ 392 00fc 8823      		tst r24
+ 393 00fe 01F0      		breq .L18
+ 118:main.c        **** 			{
+ 119:main.c        **** 				t->exec_time = ms + (t->delay_time);
+ 395               	.LM51:
+ 396 0100 2091 0000 		lds r18,ms
+ 397 0104 3091 0000 		lds r19,ms+1
+ 398 0108 8C81      		ldd r24,Y+4
+ 399 010a 9D81      		ldd r25,Y+5
+ 400 010c 820F      		add r24,r18
+ 401 010e 931F      		adc r25,r19
+ 403               	.LM52:
+ 404 0110 9B83      		std Y+3,r25
+ 405 0112 8A83      		std Y+2,r24
+ 406               	.L17:
+ 407               	.LBE4:
+ 110:main.c        **** 	{
+ 409               	.LM53:
+ 410 0114 2796      		adiw r28,7
+ 411 0116 80E0      		ldi r24,hi8(tasks+70)
+ 412 0118 C030      		cpi r28,lo8(tasks+70)
+ 413 011a D807      		cpc r29,r24
+ 414 011c 01F4      		brne .L19
+ 415               	/* epilogue start */
+ 416               	.LBE3:
+ 120:main.c        **** 			}
+ 121:main.c        **** 			else
+ 122:main.c        **** 			{
+ 123:main.c        **** 				t->func = NULL;
+ 124:main.c        **** 			}
+ 125:main.c        **** 		}
+ 126:main.c        **** 	}
+ 127:main.c        **** }
+ 418               	.LM54:
+ 419 011e FF91      		pop r31
+ 420 0120 EF91      		pop r30
+ 421 0122 DF91      		pop r29
+ 422 0124 CF91      		pop r28
+ 423 0126 BF91      		pop r27
+ 424 0128 AF91      		pop r26
+ 425 012a 9F91      		pop r25
+ 426 012c 8F91      		pop r24
+ 427 012e 7F91      		pop r23
+ 428 0130 6F91      		pop r22
+ 429 0132 5F91      		pop r21
+ 430 0134 4F91      		pop r20
+ 431 0136 3F91      		pop r19
+ 432 0138 2F91      		pop r18
+ 433 013a 0F90      		pop r0
+ 434 013c 0FBE      		out __SREG__,r0
+ 435 013e 0F90      		pop r0
+ 436 0140 1F90      		pop r1
+ 437 0142 1895      		reti
+ 438               	.L18:
+ 439               	.LBB6:
+ 440               	.LBB5:
+ 123:main.c        **** 			}
+ 442               	.LM55:
+ 443 0144 1982      		std Y+1,__zero_reg__
+ 444 0146 1882      		st Y,__zero_reg__
+ 445 0148 00C0      		rjmp .L17
+ 446               	.LBE5:
+ 447               	.LBE6:
+ 449               	.Lscope8:
+ 451               	.global	tasks
+ 452               		.section .bss
+ 455               	tasks:
+ 456 0000 0000 0000 		.zero	70
+ 456      0000 0000 
+ 456      0000 0000 
+ 456      0000 0000 
+ 456      0000 0000 
+ 458               	.global	ms
+ 461               	ms:
+ 462 0046 0000      		.zero	2
+ 464               		.text
+ 466               	.Letext0:
+ 467               		.ident	"GCC: (GNU) 10.2.0"
+ 468               	.global __do_clear_bss
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+     /tmp/ccHYVRMp.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccHYVRMp.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccHYVRMp.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccHYVRMp.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccHYVRMp.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccHYVRMp.s:18     .text:0000000000000000 blink0
+     /tmp/ccHYVRMp.s:42     .text:000000000000000a blink1
+     /tmp/ccHYVRMp.s:66     .text:0000000000000014 blink2
+     /tmp/ccHYVRMp.s:90     .text:000000000000001e init
+     /tmp/ccHYVRMp.s:455    .bss:0000000000000000 tasks
+     /tmp/ccHYVRMp.s:149    .text:0000000000000040 add_task
+     /tmp/ccHYVRMp.s:461    .bss:0000000000000046 ms
+     /tmp/ccHYVRMp.s:251    .text.startup:0000000000000000 main
+     /tmp/ccHYVRMp.s:300    .text:0000000000000090 remove_task
+     /tmp/ccHYVRMp.s:328    .text:00000000000000a2 __vector_10
+
+UNDEFINED SYMBOLS
+__do_clear_bss
